@@ -6,4 +6,11 @@ defmodule VindApiWeb.PageController do
     # so skip the default app layout.
     render(conn, :home, layout: false)
   end
+
+  def render_framer(conn, _params) do
+    {:ok, body} =
+      VindApiWeb.WebEmbeds.render(conn.request_path)
+
+    html(conn, body)
+  end
 end

@@ -17,7 +17,9 @@ defmodule VindApiWeb.Router do
   scope "/", VindApiWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", PageController, :render_framer
+    get "/resources", PageController, :render_framer
+    get "/resources/:id", PageController, :render_framer
   end
 
   # Other scopes may use custom stacks.
