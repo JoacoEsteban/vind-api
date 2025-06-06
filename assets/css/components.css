@@ -1,0 +1,38 @@
+.install-vind-banner {
+  font-family: made_tommy;
+
+  h3 {
+    letter-spacing: -3.8px;
+  }
+}
+
+.vind-button {
+  font-family: made_tommy;
+  & > div {
+    place-content: center;
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: row;
+    gap: 10px;
+    height: min-content;
+    overflow: visible;
+    padding: 10px 20px;
+    position: relative;
+    line-height: 1.2;
+    border-radius: 100px;
+    backdrop-filter: blur(6px);
+  }
+
+  p {
+    font-weight: 600;
+    font-size: 24px;
+  }
+}
+
+footer {
+  a:hover {
+    @apply underline;
+    color: #0088ff;
+  }
+}

@@ -1,5 +1,44 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import './fonts.css';
+@import './components.css';
+@import './blog-post.css';
 
-/* This file is for your main application CSS */
+:root {
+  --text-primary: white;
+  --text-secondary: rgb(173, 173, 173);
+  --text-tertiary: rgb(110, 110, 110);
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .primary {
+    color: var(--text-primary);
+  }
+
+  .secondary {
+    color: var(--text-secondary);
+  }
+
+  .tertiary {
+    color: var(--text-tertiary);
+  }
+}
+
+.font-made_tommy {
+  font-family: made_tommy;
+}
+
+.font-inter {
+  font-family: inter;
+}

@@ -673,4 +673,19 @@ defmodule VindApiWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  def pretty_date(date) do
+    date
+    |> DateTimeParser.parse_date()
+    |> case do
+      {:ok, date} ->
+        date
+        |> Calendar.strftime("%b %d, %Y")
+
+      {:error, _} ->
+        "Sometime ago"
+    end
+  end
+
+  embed_templates "components/*"
 end

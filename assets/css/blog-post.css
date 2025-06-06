@@ -1,0 +1,48 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply leading-[1];
+  font-family: made_tommy;
+  font-weight: 500 !important;
+  scroll-margin-top: 50px;
+}
+
+h1.main {
+  @apply lg:text-7xl md:text-6xl text-5xl text-center;
+  letter-spacing: -3.8px;
+}
+
+main.blog-post .prose {
+  max-width: 787px;
+
+  p {
+    @apply secondary;
+  }
+
+  h2.description-heading {
+    @apply lg:text-4xl secondary !font-normal text-center;
+  }
+
+  article {
+    font-family: Inter, sans-serif;
+    font-size: min(18px, 4vw);
+    line-height: 1.2;
+
+    pre:has(> code) {
+      font-size: 70% !important;
+      background: #111 !important;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 48px;
+      border-radius: 20px;
+      box-shadow: rgba(255, 255, 255, 0.067) 0px 10px 20px 5px;
+    }
+  }
+}
