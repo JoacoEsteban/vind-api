@@ -138,15 +138,29 @@ defmodule VindApi.TemplateMacros do
       VindApi.TemplateMacros.compile_all(
         &Phoenix.Template.__embed__(&1, opts[:suffix]),
         Path.expand(opts[:root] || __DIR__, __DIR__),
-        pattern
+        pattern,
+        opts
       )
     end
   end
 
-  defmacro compile_all(converter, root, pattern, engines \\ nil) do
+  defmacro compile_all(converter, root, pattern, opts \\ [], engines \\ nil) do
     quote bind_quoted: binding() do
+      templates =
+        VindApi.TemplateMacros.__compile_all__(__MODULE__, converter, root, pattern, engines)
+
+      case Keyword.get(opts, :list_embed_key) do
+        key when is_atom(key) ->
+          def unquote(key)() do
+            unquote(Macro.escape(templates))
+          end
+
+        _ ->
+          nil
+      end
+
       for {path, name, body, front_matter} <-
-            VindApi.TemplateMacros.__compile_all__(__MODULE__, converter, root, pattern, engines) do
+            templates do
         IO.inspect(String.to_atom(name), label: "ATOM")
         @external_resource path
         @file path
