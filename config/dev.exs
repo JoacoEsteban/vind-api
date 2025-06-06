@@ -55,7 +55,8 @@ config :vind_api, VindApiWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/vind_api_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/vind_api_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r{vind_docs/.*(eex|md)$}
     ]
   ]
 

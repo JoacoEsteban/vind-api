@@ -1,10 +1,7 @@
 defmodule VindApiWeb.PageHTML do
-  @moduledoc """
-  This module contains pages rendered by PageController.
-
-  See the `page_html` directory for all templates available.
-  """
+  require VindApi.TemplateMacros
   use VindApiWeb, :html
 
-  embed_templates "page_html/*"
+  VindApi.TemplateMacros.embed_templates("page_html/*")
+  VindApi.TemplateMacros.embed_templates("vind-docs/*")
 end
