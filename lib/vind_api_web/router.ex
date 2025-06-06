@@ -17,11 +17,11 @@ defmodule VindApiWeb.Router do
   pipeline :blog do
     plug :put_layout, html: {VindApiWeb.Layouts, :blog}
   end
+
   scope "/", VindApiWeb do
     pipe_through :browser
-
     get "/", PageController, :render_framer
-    get "/resources", PageController, :render_framer
+    get "/resources", PageController, :resources_index
   end
 
   scope "/resources", VindApiWeb do

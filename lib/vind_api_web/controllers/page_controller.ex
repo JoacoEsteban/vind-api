@@ -1,10 +1,20 @@
 defmodule VindApiWeb.PageController do
   use VindApiWeb, :controller
 
-  def home(conn, _params) do
+  def resources_index(conn, _params) do
     # The home page is often custom made,
     # so skip the default app layout.
-    render(conn, :home, layout: false)
+
+    posts =
+      VindApiWeb.PageHTML.all_posts()
+      |> Enum.map(fn {_, slug, _, front_matter} ->
+        %{url: "/resources/" <> slug, front_matter: front_matter}
+      end)
+
+    render(conn, :resources_index,
+      posts: posts,
+      layout: false
+    )
   end
 
   def render_framer(conn, _params) do
