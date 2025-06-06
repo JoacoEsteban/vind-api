@@ -19,7 +19,7 @@ defmodule VindApi.MixProject do
   def application do
     [
       mod: {VindApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :fast_html]
     ]
   end
 
@@ -58,7 +58,11 @@ defmodule VindApi.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:ecto_sqlite3_extras, "~> 1.2.0"}
+      {:ecto_sqlite3_extras, "~> 1.2.0"},
+      {:date_time_parser, "~> 1.2.0"},
+      {:earmark, "~> 1.4"},
+      {:autumn, "~> 0.3.3"},
+      {:fast_html, "~> 2.0"}
     ]
   end
 
