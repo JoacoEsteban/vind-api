@@ -42,3 +42,7 @@ html {
 .font-inter {
   font-family: inter;
 }
+
+.math-inline {
+  display: inline-block;
+}

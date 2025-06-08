@@ -63,6 +63,7 @@ config :phoenix, :json_library, Jason
 
 config :phoenix, :template_engines, md: VindApi.MdEngine
 config :floki, :html_parser, Floki.HTMLParser.FastHtml
+config :nodejs, debug_mode: true
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

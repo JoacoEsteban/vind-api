@@ -29,14 +29,32 @@ defmodule VindApi.MdEngine do
   end
 
   defp markdown_to_html!(markdown_body) do
-    Earmark.Parser.as_ast(markdown_body, sub_sup: true, math: true, code_class_prefix: "lang-")
-    |> (fn {:ok, ast, _} -> ast end).()
-    |> Earmark.Transform.map_ast(&highlight_code/1)
+    {:ok, _} = Application.ensure_all_started(:fast_html)
+
+    EarmarkParser.as_ast(markdown_body, math: true, code_class_prefix: "lang-")
+    |> case do
+      {:ok, ast, _} -> ast
+    end
+    |> Earmark.Transform.map_ast(&process_html_node/1)
     |> earmark_to_floki()
     |> Floki.raw_html()
   end
 
-  defp highlight_code({"pre", _, [{"code", code_attrs, [body], _}], _}) do
+  defp process_html_node({"code", [{"class", "math-inline"}], [text], meta}) do
+    # Render math expression
+    math_exp_ast =
+      VindApi.MathJaxRenderer.render_to_mathml(text)
+      |> case do
+        {:ok, result} -> result
+      end
+      |> Floki.parse_fragment!(parser_args: [preserve_whitespace: true])
+      |> floki_to_earmark()
+
+    {:replace, {"span", [{"class", "math-inline"}], [math_exp_ast], meta}}
+  end
+
+  defp process_html_node({"pre", _, [{"code", code_attrs, [body], _}], _}) do
+    # Highlight code
     lang =
       code_attrs
       |> List.keyfind("class", 0)
@@ -57,15 +75,13 @@ defmodule VindApi.MdEngine do
           "plaintext"
       end
 
-    {:ok, _} = Application.ensure_all_started(:fast_html)
-
     {:replace,
      Autumn.highlight!(body, language: lang, theme: "material_darker")
      |> Floki.parse_fragment!(parser_args: [preserve_whitespace: true])
      |> floki_to_earmark()}
   end
 
-  defp highlight_code(node) do
+  defp process_html_node(node) do
     node
   end
 
