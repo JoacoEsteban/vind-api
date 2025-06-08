@@ -1,4 +1,12 @@
 defmodule VindApiWeb.WebEmbeds do
+  @block_anchors_script Path.join(__DIR__, "/web_embeds/block_anchors.js")
+  @external_resource @block_anchors_script
+  @disable_js_navigation_script {
+    "script",
+    [],
+    @block_anchors_script
+    |> File.read!()
+  }
   @base_url "https://powerful-direction-650027.framer.app"
 
   def render(path) when is_binary(path) do
@@ -35,6 +43,9 @@ defmodule VindApiWeb.WebEmbeds do
               "window.dataLayer = window.dataLayer || [];	function gtag(){dataLayer.push(arguments);}	gtag('js', new Date());	gtag('config', 'G-8CSQWH3SSP');"}
              | children
            ]}
+
+        {tag = "body", attrs, children} ->
+          {tag, attrs, children ++ [@disable_js_navigation_script]}
 
         {tag = "style", [head = {attr_name = "data-framer-css-ssr-minified", attr_name} | attrs],
          [children]} ->
