@@ -19,14 +19,31 @@ defmodule Mix.Tasks.Build do
     with_timing do
       Mix.Task.run("app.start")
 
+      now =
+        DateTime.utc_now()
+        |> Calendar.strftime("%Y-%m-%d")
+
       resources = "/resources/"
 
       routes =
         VindApiWeb.PageHTML.all_posts()
-        |> Enum.map(fn {_path, name, _body, _front_matter} -> name end)
-        |> Enum.map(fn name -> resources <> name end)
+        |> Enum.map(fn {_path, name, _body, _front_matter, last_modified} ->
+          date =
+            case last_modified do
+              {:ok, date} ->
+                date
 
-      VindApi.StaticBuilder.build(["/", resources | routes])
+              {:error, :date_empty} ->
+                now
+            end
+
+          {name, date}
+        end)
+        |> Enum.map(fn {name, last_modified} -> {resources <> name, last_modified} end)
+
+      {_, newest} = Enum.max_by(routes, fn {_path, last_modified} -> last_modified end)
+
+      VindApi.StaticBuilder.build([{"/", now}, {resources, newest} | routes])
     end
   end
 end

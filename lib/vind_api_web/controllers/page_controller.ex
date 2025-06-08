@@ -7,7 +7,7 @@ defmodule VindApiWeb.PageController do
 
     posts =
       VindApiWeb.PageHTML.all_posts()
-      |> Enum.map(fn {_, slug, _, front_matter} ->
+      |> Enum.map(fn {_, slug, _, front_matter, _last_modified} ->
         %{url: "/resources/" <> slug, front_matter: front_matter}
       end)
       |> Enum.sort_by(&DateTimeParser.parse_date!(Map.get(&1, :front_matter)[:date]), :desc)

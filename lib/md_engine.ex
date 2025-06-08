@@ -2,13 +2,18 @@ defmodule VindApi.MdEngine do
   @behaviour Phoenix.Template.Engine
 
   def read_document(path) do
-    path
-    |> File.read!()
-    |> split_contents
+    {attrs, html_body} =
+      path
+      |> File.read!()
+      |> split_contents()
+
+    last_modified = fn -> VindApi.GitHelpers.last_modified(:date, path) end
+
+    {attrs, html_body, last_modified}
   end
 
   def compile(path, _name) do
-    {_, html_body} =
+    {_, html_body, _} =
       read_document(path)
 
     EEx.compile_string(
@@ -175,7 +180,7 @@ defmodule VindApi.TemplateMacros do
           nil
       end
 
-      for {path, name, body, front_matter} <-
+      for {path, name, body, front_matter, last_modified} <-
             templates do
         IO.inspect(String.to_atom(name), label: "ATOM")
         @external_resource path
@@ -188,6 +193,12 @@ defmodule VindApi.TemplateMacros do
         if front_matter != nil do
           def unquote(String.to_atom(name <> "_front_matter"))() do
             unquote(Macro.escape(front_matter))
+          end
+        end
+
+        if last_modified != nil do
+          def unquote(String.to_atom(name <> "_last_modified"))() do
+            unquote(Macro.escape(last_modified))
           end
         end
 
@@ -208,17 +219,18 @@ defmodule VindApi.TemplateMacros do
         name = converter.(path)
         body = engine.compile(path, name)
 
-        front_matter =
+        {front_matter, last_modified} =
           case engine do
             VindApi.MdEngine ->
-              {fm, _} = engine.read_document(path)
-              fm.()
+              {fm, _, last_modified} = engine.read_document(path)
+
+              {fm.(), last_modified.()}
 
             _ ->
-              nil
+              {nil, nil}
           end
 
-        map = {path, name, body, front_matter}
+        map = {path, name, body, front_matter, last_modified}
         reduce = {[path | acc_paths], Map.put(acc_engines, engine, true)}
         {map, reduce}
       end)
