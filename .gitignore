@@ -42,3 +42,7 @@ npm-debug.log
 *.db-*
 
 .DS_Store
+
+vind-static/dist
+vind-static/.wrangler
+vind-static/node_modules

@@ -4,7 +4,7 @@ defmodule VindApi.StaticBuilder do
   require Phoenix.LiveViewTest
   use VindApiWeb.ConnCase
 
-  @output_dir "./dist"
+  @output_dir "./vind-static/dist"
   @canonical "https://vind-works.io"
 
   Phoenix.Template.embed_templates("templates/*")
