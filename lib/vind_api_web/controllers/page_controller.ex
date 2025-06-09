@@ -14,7 +14,8 @@ defmodule VindApiWeb.PageController do
 
     render(conn, :resources_index,
       posts: posts,
-      layout: false
+      layout: false,
+      page_title: "Resources"
     )
   end
 
