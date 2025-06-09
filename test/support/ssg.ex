@@ -28,6 +28,11 @@ defmodule VindApi.StaticBuilder do
       "sitemap.xml",
       render_sitemap(routes)
     )
+
+    write_file(
+      "404.html",
+      render_not_found()
+    )
   end
 
   defp render_sitemap(routes) do
@@ -35,6 +40,12 @@ defmodule VindApi.StaticBuilder do
       routes: routes,
       canonical: @canonical
     })
+  end
+
+  defp render_not_found() do
+    conn = build_conn()
+    conn = get(conn, "/some/unexisting/route")
+    html_response(conn, 404)
   end
 
   defp write_file(file_path, content) do
