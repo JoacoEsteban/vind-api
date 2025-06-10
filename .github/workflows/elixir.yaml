@@ -11,7 +11,9 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  build-and-deploy-to-cloudflare-workers:
+    environment:
+      name: prod
     runs-on: ubuntu-22.04
     name: Test on OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
     strategy:
