@@ -11,4 +11,15 @@ defmodule VindApiWeb.Layouts do
   use VindApiWeb, :html
 
   embed_templates "layouts/*"
+
+  def root_error(assigns) do
+    root(
+      assigns
+      |> Map.put(:page_title, "Error " <> Integer.to_string(assigns[:status]))
+      |> VindApi.Map.put_merged(
+        :meta_tags,
+        %{robots: "noindex, nofollow"}
+      )
+    )
+  end
 end

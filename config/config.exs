@@ -17,7 +17,7 @@ config :vind_api, VindApiWeb.Endpoint,
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: VindApiWeb.ErrorHTML, json: VindApiWeb.ErrorJSON],
-    root_layout: {VindApiWeb.Layouts, :root},
+    root_layout: {VindApiWeb.Layouts, :root_error},
     layout: false
   ],
   pubsub_server: VindApi.PubSub,
