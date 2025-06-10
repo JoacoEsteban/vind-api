@@ -109,7 +109,9 @@ jobs:
         run: mix compile
 
       - name: Run build
-        run: mix build
+        run: |
+          mix assets.deploy
+          mix build
 
       - name: Deploy Vind static site
         uses: cloudflare/wrangler-action@v3
