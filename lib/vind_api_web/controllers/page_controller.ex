@@ -1,5 +1,6 @@
 defmodule VindApiWeb.PageController do
   use VindApiWeb, :controller
+  @splash_url "/splash-scaled.png"
 
   def resources_index(conn, _params) do
     # The home page is often custom made,
@@ -15,7 +16,10 @@ defmodule VindApiWeb.PageController do
     render(conn, :resources_index,
       posts: posts,
       layout: false,
-      page_title: "Resources"
+      page_title: "Resources",
+      meta_tags: %{robots: "index, follow"},
+      "og:image": @splash_url,
+      "twitter:image": @splash_url
     )
   end
 
@@ -29,10 +33,30 @@ defmodule VindApiWeb.PageController do
   def render_doc(conn, params) do
     id = params["id"]
 
+    front_matter =
+      conn
+      |> get_front_matter(id)
+      |> :maps.from_list()
+
+    assigns =
+      front_matter
+      |> Map.put(:page_title, "Resources - " <> front_matter[:title])
+      |> Map.put(:meta_tags, %{
+        robots: "index, follow",
+        description: front_matter[:description],
+        "og:description": front_matter[:description],
+        "twitter:description": front_matter[:description],
+        "og:title": front_matter[:title],
+        "twitter:title": front_matter[:title],
+        "og:image": front_matter[:hero_img],
+        "twitter:image": front_matter[:hero_img],
+        "og:type": "article"
+      })
+
     conn
     |> render(
       id <> ".html",
-      conn |> get_front_matter(id)
+      assigns
     )
   end
 
