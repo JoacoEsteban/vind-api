@@ -26,10 +26,28 @@ defmodule VindApiWeb.WebEmbeds do
       document
       |> Floki.filter_out("#__framer-badge-container")
       |> Floki.filter_out("head meta[name=robots]")
-      |> Floki.filter_out("head link[rel=canonical]")
-      |> Floki.filter_out("head meta[property=og:url]")
       |> Floki.filter_out("head meta[name=generator]")
       |> Floki.filter_out("head meta[name=framer-search-index]")
+      |> Floki.filter_out(%Floki.Selector{
+        type: "meta",
+        attributes: [
+          %Floki.Selector.AttributeSelector{
+            match_type: :equal,
+            attribute: "property",
+            value: "og:url"
+          }
+        ]
+      })
+      |> Floki.filter_out(%Floki.Selector{
+        type: "link",
+        attributes: [
+          %Floki.Selector.AttributeSelector{
+            match_type: :equal,
+            attribute: "rel",
+            value: "canonical"
+          }
+        ]
+      })
       |> Floki.traverse_and_update(fn
         {tag = "body", attrs, children} ->
           {tag, attrs, children ++ [@disable_js_navigation_script]}
