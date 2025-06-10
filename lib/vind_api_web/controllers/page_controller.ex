@@ -27,7 +27,11 @@ defmodule VindApiWeb.PageController do
     {:ok, body} =
       VindApiWeb.WebEmbeds.render(conn.request_path)
 
-    html(conn, body)
+    assign(conn, :outer_content, body)
+    |> render(:empty,
+      page_title: "The Ultimate Chrome Extension for Keyboard Shortcuts",
+      meta_tags: %{robots: "index, follow"}
+    )
   end
 
   def render_doc(conn, params) do
