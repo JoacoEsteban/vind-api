@@ -31,19 +31,6 @@ defmodule VindApiWeb.WebEmbeds do
       |> Floki.filter_out("head meta[name=generator]")
       |> Floki.filter_out("head meta[name=framer-search-index]")
       |> Floki.traverse_and_update(fn
-        {tag = "head", attrs, children} ->
-          {tag, attrs,
-           [
-             {"meta", [{"name", "robots"}, {"content", "index, follow"}], []},
-             {"link", [{"rel", "canonical"}, {"href", "canonicalUrl"}], []},
-             {"meta", [{"property", "og:url"}, {"content", "${canonicalUrl}"}], []},
-             {"script",
-              ["async", {"src", "https://www.googletagmanager.com/gtag/js?id=G-8CSQWH3SSP"}], []},
-             {"script", [],
-              "window.dataLayer = window.dataLayer || [];	function gtag(){dataLayer.push(arguments);}	gtag('js', new Date());	gtag('config', 'G-8CSQWH3SSP');"}
-             | children
-           ]}
-
         {tag = "body", attrs, children} ->
           {tag, attrs, children ++ [@disable_js_navigation_script]}
 
