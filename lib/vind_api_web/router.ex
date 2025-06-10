@@ -1,4 +1,5 @@
 defmodule VindApiWeb.Router do
+  @canonical "https://vind-works.io"
   use VindApiWeb, :router
 
   pipeline :browser do
@@ -8,6 +9,7 @@ defmodule VindApiWeb.Router do
     plug :put_root_layout, html: {VindApiWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :put_canonical
   end
 
   pipeline :api do
@@ -27,6 +29,10 @@ defmodule VindApiWeb.Router do
   scope "/resources", VindApiWeb do
     pipe_through [:browser, :blog]
     get "/:id", PageController, :render_doc
+  end
+
+  def put_canonical(conn, _opts) do
+    Plug.Conn.assign(conn, :canonical, @canonical <> conn.request_path)
   end
 
   # Other scopes may use custom stacks.
