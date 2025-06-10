@@ -85,6 +85,7 @@ defmodule VindApiWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import VindApiWeb.CoreComponents
+      import VindApiWeb.CoreHelpers
       import VindApiWeb.Gettext
 
       # Shortcut for generating JS commands

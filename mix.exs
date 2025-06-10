@@ -69,7 +69,8 @@ defmodule VindApi.MixProject do
       {:earmark_parser, "~> 1.4"},
       {:autumn, "~> 0.3.3"},
       {:fast_html, "~> 2.0"},
-      {:nodejs, "~> 3.1"}
+      {:nodejs, "~> 3.1"},
+      {:phoenix_html_helpers, "~> 1.0"}
     ]
   end
 
