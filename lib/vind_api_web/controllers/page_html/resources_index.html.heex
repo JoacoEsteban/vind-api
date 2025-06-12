@@ -7,7 +7,7 @@
     <div class="flex flex-col gap-12">
       <%= for post <- @posts do %>
         <a class="flex max-md:flex-col max-md:items-center gap-5 md:gap-10 px-5" href={post.url}>
-          <div class="w-[min(200px,100%)] h-[120px] md:size-[150px] rounded-xl">
+          <div class="w-[min(200px,100%)] h-[120px] md:size-[150px] rounded-xl shrink-0">
             <img
               decoding="async"
               src={post.front_matter[:hero_img]}
