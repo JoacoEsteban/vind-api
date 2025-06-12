@@ -3,5 +3,9 @@ defmodule VindApiWeb.PageHTML do
   use VindApiWeb, :html
 
   VindApi.TemplateMacros.embed_templates("page_html/*")
-  VindApi.TemplateMacros.embed_templates("vind-docs/*", list_embed_key: :all_posts)
+
+  VindApi.TemplateMacros.embed_templates("vind-docs/*",
+    list_embed_key: :all_posts,
+    assets_output_directory_name: "resources"
+  )
 end

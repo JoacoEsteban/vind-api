@@ -151,17 +151,60 @@ defmodule VindApi.TemplateMacros do
   require Phoenix.Template
   import Phoenix.Template
 
+  @static_dir Application.app_dir(:vind_api, "priv/static")
+  @assets_directory_name "assets"
+
   @doc type: :macro
   defmacro embed_templates(pattern, opts \\ []) do
     IO.inspect(pattern)
 
     quote bind_quoted: [pattern: pattern, opts: opts] do
+      root = Path.expand(opts[:root] || __DIR__, __DIR__)
+
+      VindApi.TemplateMacros.copy_assets(
+        pattern,
+        root,
+        opts[:assets_output_directory_name]
+      )
+
       VindApi.TemplateMacros.compile_all(
         &Phoenix.Template.__embed__(&1, opts[:suffix]),
-        Path.expand(opts[:root] || __DIR__, __DIR__),
+        root,
         pattern,
         opts
       )
+    end
+  end
+
+  def copy_assets(_pattern, _root, output_path) when is_nil(output_path) do
+  end
+
+  def copy_assets(pattern, root, output_path) do
+    assets_source =
+      Path.join(root, pattern)
+      |> String.split("*", parts: 2)
+      |> List.first()
+      |> Path.join(@assets_directory_name)
+
+    assets_destination =
+      @static_dir
+      |> Path.join(output_path)
+      |> Path.join(@assets_directory_name)
+
+    File.mkdir_p(assets_destination)
+
+    with true <- File.exists?(assets_source),
+         {:ok, files} <- File.ls(assets_source) do
+      for file <- files do
+        with source <- Path.join(assets_source, file),
+             true <- File.regular?(source) do
+          destination = Path.join(assets_destination, file)
+
+          IO.inspect({source, destination}, label: :will_copy_asset)
+
+          File.cp!(source, destination)
+        end
+      end
     end
   end
 
