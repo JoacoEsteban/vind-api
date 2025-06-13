@@ -44,7 +44,7 @@ defmodule VindApiWeb.PageController do
 
     assigns =
       front_matter
-      |> Map.put(:page_title, "Resources - " <> front_matter[:title])
+      |> Map.put(:page_title, front_matter[:title])
       |> Map.put(:meta_tags, %{
         robots: "index, follow",
         description: front_matter[:description],
