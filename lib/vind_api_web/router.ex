@@ -23,6 +23,7 @@ defmodule VindApiWeb.Router do
   scope "/", VindApiWeb do
     pipe_through :browser
     get "/", PageController, :render_framer
+    # TODO add trailing slash for dev env so assets resolve correctly
     get "/resources", PageController, :resources_index
   end
 
